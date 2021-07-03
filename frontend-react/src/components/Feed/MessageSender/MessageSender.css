@@ -1,5 +1,6 @@
 .messageSender{
     display: flex;
+    margin-top: 30px;
     flex-direction: column;
     background-color: white;
     border-radius: 15px;
@@ -14,7 +15,7 @@
 
 }
 
-.messageSender_top > form {
+.messageSender__top > form {
     flex: 1;
     display: flex;
 }
@@ -34,7 +35,6 @@
 
 .messageSender__input{
     flex: 1 !important;
-    width: 350px;
 }
 
 .messageSender__bottom {
