@@ -7,7 +7,7 @@ import Widgets from './components/Widgets/Widgets';
 
 
 function App() {
-  const user = null
+  const user = "muneeb"
     return (
     <div className="app">
       {!user ? (
