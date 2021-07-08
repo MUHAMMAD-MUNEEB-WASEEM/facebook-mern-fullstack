@@ -17,7 +17,7 @@ function App() {
           <Login/>
         ):(
           <>
-          <Header/>
+          <Header />
 
           <div className="app__body">
             <Sidebar/>
