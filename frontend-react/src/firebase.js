@@ -2,12 +2,12 @@
 import firebase from 'firebase';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBDCe6f-cXkeSXyGFmDecXN__jE3-kUVTo",
-  authDomain: "facebook-firebase-fullstack.firebaseapp.com",
-  projectId: "facebook-firebase-fullstack",
-  storageBucket: "facebook-firebase-fullstack.appspot.com",
-  messagingSenderId: "663232030936",
-  appId: "1:663232030936:web:7fc4d405d249c18c110fad"
+  apiKey: "AIzaSyDE7bk8LEPxiPlZMxTLZEjB6sN1D_onI30",
+  authDomain: "facebook-mern-fullstack.firebaseapp.com",
+  projectId: "facebook-mern-fullstack",
+  storageBucket: "facebook-mern-fullstack.appspot.com",
+  messagingSenderId: "481765615479",
+  appId: "1:481765615479:web:bc9f49a180d5c5b30b6372"
 };
 
 //initializing app mandatory
