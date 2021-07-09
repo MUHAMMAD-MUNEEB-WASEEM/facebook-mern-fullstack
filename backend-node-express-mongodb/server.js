@@ -8,6 +8,7 @@ import Grid from 'gridfs-stream';
 import multer from 'multer';
 import GridFsStorage from 'multer-gridfs-storage'
 import bodyParser from 'body-parser';
+import mongoPosts from './mongoPosts';
 
 Grid.mongo = mongoose.mongo
 
@@ -74,7 +75,7 @@ const upload = multer({ storage })
 app.get('/', (req, res)=>res.status(200).send('hello world'))
 
 
-//***********getting image*********
+//***********get and post image*********
 
 app.get('/retrieve/image/single', (req, res)=>{
     gfs.files.findOne({filename: req.query.name }, (err, file)=>{
@@ -91,10 +92,45 @@ app.get('/retrieve/image/single', (req, res)=>{
     })
 })
 
-//********************** image post *****************
 app.post('/upload/image', upload.any('file'), (req, res)=>{
     res.status(201).send(req.file)
 })
+
+
+//********************** get and post data *****************
+
+
+app.get('/retrieve/posts', (req,res)=>{
+    mongoPosts.find((err,data)=>{
+        if (err){
+            res.status(500).send(err)
+        }else {
+
+            data.sor((b,a)=>{
+                return a.timestamp-b.timestamp
+            });
+
+            res.status(200).send(data)
+            
+        }
+    })
+})
+
+
+app.post('/upload/post', (req, res)=>{
+    const dbPost = req.body
+    console.log(dbPost)
+
+    mongoPosts.create(dbPost, (err, data)=>{
+        if (err) {
+            res.status(500).send(err)
+        }else {
+            res.status(201).send(data)
+        }
+    })
+})
+
+
 
 //listener
 app.listen(port, console.log(`listening on localhost: ${port}`));
