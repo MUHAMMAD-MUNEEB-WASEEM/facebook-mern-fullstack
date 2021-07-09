@@ -8,7 +8,7 @@ import Grid from 'gridfs-stream';
 import multer from 'multer';
 import GridFsStorage from 'multer-gridfs-storage'
 import bodyParser from 'body-parser';
-import mongoPosts from './mongoPosts';
+import mongoPost from './mongoPosts.js'
 
 Grid.mongo = mongoose.mongo
 
@@ -17,7 +17,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 //middlewares
-app.use(express.json()) //To convert string to json
+app.use(bodyParser.json()) //To convert string to json
 app.use(cors())//headers for heruko
 
 //db config
@@ -77,7 +77,7 @@ app.get('/', (req, res)=>res.status(200).send('hello world'))
 
 //***********get and post image*********
 
-app.get('/retrieve/image/single', (req, res)=>{
+app.get('/retrieve/images/single', (req, res)=>{
     gfs.files.findOne({filename: req.query.name }, (err, file)=>{
         if (err) {
             res.status(500).send(err)
@@ -100,18 +100,16 @@ app.post('/upload/image', upload.any('file'), (req, res)=>{
 //********************** get and post data *****************
 
 
-app.get('/retrieve/posts', (req,res)=>{
-    mongoPosts.find((err,data)=>{
-        if (err){
+app.get("/retrieve/posts",(req,res) => {
+    mongoPost.find((err, data)=>{
+        if(err) {
             res.status(500).send(err)
         }else {
-
-            data.sor((b,a)=>{
-                return a.timestamp-b.timestamp
-            });
+            data.sort((b,a)=>{
+                return a.timestamp - b.timestamp
+            })
 
             res.status(200).send(data)
-            
         }
     })
 })
@@ -121,7 +119,7 @@ app.post('/upload/post', (req, res)=>{
     const dbPost = req.body
     console.log(dbPost)
 
-    mongoPosts.create(dbPost, (err, data)=>{
+    mongoPost.create(dbPost, (err, data)=>{
         if (err) {
             res.status(500).send(err)
         }else {

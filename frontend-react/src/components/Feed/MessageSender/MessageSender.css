@@ -8,6 +8,7 @@
     width: 100%;
 }
 
+
 .messageSender__top{
     display: flex;
     border-bottom: 1px solid #eff2f5;
@@ -35,6 +36,12 @@
 
 .messageSender__input{
     flex: 1 !important;
+}
+
+.messageSender__fileSelector {
+    width: 31%;
+    background: none;
+    background-color: transparent;
 }
 
 .messageSender__bottom {

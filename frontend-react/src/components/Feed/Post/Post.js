@@ -4,7 +4,7 @@ import { Avatar } from '@material-ui/core'
 import { AccountCircle, ChatBubbleOutline, ExpandMoreOutlined, NearMe, ThumbsUpDown, ThumbUp } from '@material-ui/icons'
 
 
-function Post({ profilePic, image, username, timestamp, message }) {
+function Post({ profilePic, imgName, username, timestamp, message }) {
     return (
         <div className="post">
 
@@ -12,7 +12,7 @@ function Post({ profilePic, image, username, timestamp, message }) {
                 <Avatar src={profilePic} className="post__avatar"/>
                 <div className="post__topInfo">
                     <h3>{username}</h3>
-                    <p>{new Date(timestamp?.toDate()).toUTCString()}</p>
+                    <p>{new Date(parseInt(timestamp)).toUTCString()}</p>
                 </div>
             </div>
 
@@ -20,9 +20,16 @@ function Post({ profilePic, image, username, timestamp, message }) {
                 <p>{message}</p>
             </div>
 
-            <div className="post__image">
-                <img src={image} />
-            </div>
+            {
+                imgName ? (
+                    <div className="post__image">
+                        <img src={`http://localhost:9000/retrieve/images/single?name=${imgName}`} />
+                    </div>
+                ) : (
+                        console.log('DEBUG >>> no image here')
+                    )
+            }
+
 
             <div className="post__options">
                 <div className="post__option">

@@ -4,31 +4,44 @@ import MessageSender from './MessageSender/MessageSender'
 import Post from './Post/Post'
 import StoryReel from './StoryReel/StoryReel'
 import db from '../../firebase';
+import axios from '../axios/axios'
 import { useEffect } from 'react'
+import { useStateValue } from '../StateProvider/StateProvider';
 
 function Feed() {
-    const [posts, setPosts] = useState([]);
+    const [profilePic, setProfilePic] = useState('')
+    const [postsData, setPostsData] = useState([])
+    const [{user}, dispatch] = useStateValue()
+    
+
+    const syncFeed = () => {
+        axios.get('/retrieve/posts')
+            .then((res)=>{
+                console.log(res.data)
+                setPostsData(res.data)
+            })
+    };
 
     useEffect(()=>{
-        db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-            setPosts(snapshot.docs.map(doc => ({ id:doc.id, data: doc.data() })))
-        })
+        syncFeed()
     }, [])
+
+    {postsData.map((entry)=>{
+        console.log(entry)
+    })}
 
     return (
         <div className="feed">
             <StoryReel/>
             <MessageSender/>
 
-        {posts.map((post) => (
-
+        {postsData.map((entry) => (
             <Post 
-            key={post.id}
-            username={post.data.username}
-            message={post.data.message}
-            timestamp={post.data.timestamp}
-            image={post.data.image}
-            profilePic={post.data.profilePic}
+            profilePic={user.photoURL}
+            message={entry.text}
+            timestamp={entry.timestamp}
+            imgName={entry.imgName}
+            username={user.displayName}
             />
 
         ))}
