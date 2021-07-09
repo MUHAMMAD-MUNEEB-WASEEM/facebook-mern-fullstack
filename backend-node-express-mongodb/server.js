@@ -20,6 +20,55 @@ app.use(express.json()) //To convert string to json
 app.use(cors())//headers for heruko
 
 //db config
+const mongoURI = 'mongodb+srv://admin:m7igUKWbGeZoQFat@cluster0.yfh06.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
+
+mongoose.connect(mongoURI,{
+    useCreateIndex:true,
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+})
+
+mongoose.connection.once('open', ()=>{
+    console.log('db connected')
+})
+
+//all below work for images
+const conn = mongoose.createConnection(mongoURI, {
+    useCreateIndex:true,
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+})
+
+
+let gfs 
+
+conn.once('open', ()=>{
+    console.log('db connected')
+    gfs = Grid(conn.db, mongoose.mongo)
+    gfs.collection('images')
+})
+
+const storage = new GridFsStorage({
+    url:mongoURI,
+    file: (req, file) => {
+        return new Promise((resolve, reject)=> {
+            {
+                const filename = `image-${Date.now()}${path.extname(file.originalname)}`
+                
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: `images`
+                }
+                resolve(fileInfo)
+            }
+        })
+    }
+})
+
+const upload = multer({ storage })
+
+
 
 //api routes
 app.get('/', (req, res)=>res.status(200).send('hello world'))
