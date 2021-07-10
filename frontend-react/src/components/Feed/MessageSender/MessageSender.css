@@ -39,9 +39,8 @@
 }
 
 .messageSender__fileSelector {
-    width: 31%;
-    background: none;
-    background-color: transparent;
+    display: flex;
+    flex: 0.68;
 }
 
 .messageSender__bottom {

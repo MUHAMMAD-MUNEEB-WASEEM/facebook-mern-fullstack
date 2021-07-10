@@ -7,6 +7,7 @@ import db from '../../firebase';
 import axios from '../axios/axios'
 import { useEffect } from 'react'
 import { useStateValue } from '../StateProvider/StateProvider';
+import Pusher from'pusher-js'
 
 function Feed() {
     const [profilePic, setProfilePic] = useState('')
@@ -23,8 +24,25 @@ function Feed() {
     };
 
     useEffect(()=>{
+
+        const pusher = new Pusher('528486e13de6e0d2d326', {
+            cluster: 'ap2'
+          });
+        
+        const channel = pusher.subscribe('posts');
+        channel.bind('inserted', function(data) {
         syncFeed()
-    }, [])
+
+    });
+    return ()=>{
+        channel.unbind_all(); // to unbind so it will no listen to all messages everytime, only listen new message
+        channel.unsubscribe();
+      };
+    },[])
+
+    useEffect(()=>{
+        syncFeed()
+    }, [postsData])
 
     {postsData.map((entry)=>{
         console.log(entry)

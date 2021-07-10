@@ -73,7 +73,7 @@ function MessageSender() {
                 <Avatar src={user.photoURL}/>
                 <form>
                     <input value={input} onChange={(e) => {setInput(e.target.value)}} className="messageSender__input" placeholder={`What's on your mind, ${user.displayName}`}/>
-                    <input type="file" className='messageSender__fileSelector' onChange={handleChange} />
+                    <Input type="file" className='messageSender__fileSelector' onChange={handleChange} />
                     <button type='submit' onClick={handleSubmit} >Hidden Submit</button>                    
                 </form>
 

@@ -16,8 +16,16 @@ Grid.mongo = mongoose.mongo
 const app = express();
 const port = process.env.PORT || 9000;
 
+const pusher = new Pusher({
+    appId: "1233451",
+    key: "528486e13de6e0d2d326",
+    secret: "1a1c9af160089fa8bf4a",
+    cluster: "ap2",
+    useTLS: true
+  });
+
 //middlewares
-app.use(bodyParser.json()) //To convert string to json
+app.use(express.json()) //To convert string to json
 app.use(cors())//headers for heruko
 
 //db config
@@ -32,6 +40,19 @@ mongoose.connect(mongoURI,{
 
 mongoose.connection.once('open', ()=>{
     console.log('db connected')
+
+    const changeStream=mongoose.connection.collection("posts").watch();
+    changeStream.on("change",(change)=>{
+        console.log(change);
+        if(change.operationType==="insert"){
+            console.log("Triggering Pusher")
+            pusher.trigger("posts","inserted",{
+                change:change
+            })
+        }else{
+            console.log("Error triggering Pusher")
+        }
+    })
 })
 
 // *****************all below work for images ****
@@ -92,7 +113,7 @@ app.get('/retrieve/images/single', (req, res)=>{
     })
 })
 
-app.post('/upload/image', upload.any('file'), (req, res)=>{
+app.post('/upload/image', upload.single('file'), (req, res)=>{
     res.status(201).send(req.file)
 })
 
