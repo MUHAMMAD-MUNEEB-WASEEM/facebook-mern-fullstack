@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## App link
 
-https://facebook-firebase-fullstack.web.app/
+https://facebook-mern-fullstack.web.app/
 
 ## Available Scripts
 
